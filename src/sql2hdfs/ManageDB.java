@@ -14,7 +14,10 @@ public class ManageDB extends javax.swing.JFrame {
     /**
      * Creates new form ManageDB
      */
+    XMLData xd;
+
     public ManageDB() {
+        xd = new XMLData();
         initComponents();
     }
 
@@ -29,7 +32,7 @@ public class ManageDB extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        urlList = new javax.swing.JList<>();
         Add = new javax.swing.JButton();
         update = new javax.swing.JButton();
         remove = new javax.swing.JButton();
@@ -37,18 +40,19 @@ public class ManageDB extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manage databases");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setForeground(new java.awt.Color(0, 204, 204));
 
-        jList1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
-        jList1.setForeground(new java.awt.Color(0, 153, 153));
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        urlList.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
+        urlList.setForeground(new java.awt.Color(0, 153, 153));
+        urlList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = xd.getUrls();
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(urlList);
 
         Add.setText("Add");
         Add.addActionListener(new java.awt.event.ActionListener() {
@@ -58,8 +62,18 @@ public class ManageDB extends javax.swing.JFrame {
         });
 
         update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
 
         remove.setText("Remove");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
 
         close.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         close.setText("Close");
@@ -133,32 +147,34 @@ public class ManageDB extends javax.swing.JFrame {
         new AddDB().setVisible(true);
     }//GEN-LAST:event_AddActionPerformed
 
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        // TODO add your handling code here:
+        xd.removeNode(urlList.getSelectedValue());
+        urlList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = xd.getUrls();
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+        });
+    }//GEN-LAST:event_removeActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        // TODO add your handling code here:
+        AddDB adb = new AddDB(urlList.getSelectedValue());
+        this.dispose();
+        adb.setVisible(true);
+    }//GEN-LAST:event_updateActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManageDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManageDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManageDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManageDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -171,10 +187,10 @@ public class ManageDB extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Add;
     private javax.swing.JButton close;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton remove;
     private javax.swing.JButton update;
+    private javax.swing.JList<String> urlList;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,9 @@
  */
 package sql2hdfs;
 
+import javax.swing.JOptionPane;
+import sun.security.util.Password;
+
 /**
  *
  * @author visha_oq8g6qb
@@ -14,8 +17,23 @@ public class AddDB extends javax.swing.JFrame {
     /**
      * Creates new form AddDB
      */
+    XMLData xd ;
+    Property up;
+    DBConnect dbc;
     public AddDB() {
+        xd = new XMLData();
         initComponents();
+    }
+    public AddDB(String url){
+         xd = new XMLData();
+        initComponents();
+        jLabel1.setVisible(false);
+        db.setVisible(false);
+        up = xd.getUser(url);
+        driver.setText(up.getDriver());
+        this.url.setText(up.getUrl());
+        username.setText(up.getUser());
+        password.setText(up.getPass());
     }
 
     /**
@@ -37,7 +55,7 @@ public class AddDB extends javax.swing.JFrame {
         driver = new javax.swing.JTextField();
         url = new javax.swing.JTextField();
         username = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        password = new javax.swing.JTextField();
         showPassword = new javax.swing.JCheckBox();
         check = new javax.swing.JButton();
         save = new javax.swing.JButton();
@@ -45,6 +63,7 @@ public class AddDB extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add databse");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -69,18 +88,40 @@ public class AddDB extends javax.swing.JFrame {
         jLabel5.setText("Password");
         jLabel5.setToolTipText("");
 
-        db.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        db.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        db.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select", "MySQL", "Oracle", "IBM DB2 App", "IBM DB2 Net\t", "Sybase", "Teradata", "Microsoft SQL Server\t", "Postgre" }));
+        db.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                dbItemStateChanged(evt);
+            }
+        });
+
+        driver.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        driver.setEnabled(false);
+
+        url.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        username.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        password.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
         showPassword.setBackground(new java.awt.Color(255, 255, 255));
         showPassword.setText("show password");
 
-        check.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         check.setText("Check");
+        check.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkActionPerformed(evt);
+            }
+        });
 
-        save.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         save.setText("Save");
+        save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveActionPerformed(evt);
+            }
+        });
 
-        close.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         close.setText("Close");
         close.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,29 +137,30 @@ public class AddDB extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(db, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(driver))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(url))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(username))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showPassword))
+                                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showPassword))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(db, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(username))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(url))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(driver, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(check, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -126,7 +168,7 @@ public class AddDB extends javax.swing.JFrame {
                         .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
                         .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,12 +189,12 @@ public class AddDB extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(showPassword))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(check, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,7 +206,7 @@ public class AddDB extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,34 +223,85 @@ public class AddDB extends javax.swing.JFrame {
         new ManageDB().setVisible(true);
     }//GEN-LAST:event_closeActionPerformed
 
+    private void dbItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_dbItemStateChanged
+        // TODO add your handling code here:
+        String selected = evt.getItem().toString();
+        switch(selected){
+            case "MySQL":
+                driver.setText("com.mysql.jdbc.Driver");
+                url.setText("jdbc:mysql://");
+                break;
+            case "Oracle":
+                driver.setText("oracle.jdbc.driver.OracleDriver");
+                url.setText("jdbc:oracle:thin:");
+                break;
+            case "IBM DB2 App":
+                driver.setText("com.ibm.db2.jdbc.app.DB2Driver");
+                url.setText("jdbc:db2:");
+                break;  
+            case "IBM DB2 Net":
+                driver.setText("com.ibm.db2.jdbc.net.DB2Driver");
+                url.setText("jdbc:db2//");
+                break;      
+            case "Sybase":
+                driver.setText("com.sybase.jdbc.SybDriver");
+                url.setText("jdbc:sybase:Tds:");
+                break;     
+            case "Teradata":
+                driver.setText("com.teradata.jdbc.TeraDriver");
+                url.setText("jdbc:teradata://");
+                break; 
+            case "Microsoft SQL Server":
+                driver.setText("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                url.setText("jdbc:sqlserver://");
+                break;   
+            case "Postgre":
+                driver.setText("org.postgresql.Driver");
+                url.setText("dbc:odbc:Driver=");
+                break;    
+        }
+    }//GEN-LAST:event_dbItemStateChanged
+
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        // TODO add your handling code here:
+        Property p =new Property();
+        p.setDriver(driver.getText());
+        p.setUrl(url.getText());
+        p.setUser(username.getText());
+        p.setPass(password.getText());
+        if(up!=null){
+            if(!p.equals(up)){
+                xd.removeNode(p.getUrl());
+            }
+                
+        }
+        if(xd.addUser(p))
+            JOptionPane.showMessageDialog(null, "Success");
+        else
+            JOptionPane.showMessageDialog(null, "Failed to store DB");
+        closeActionPerformed(evt);
+    }//GEN-LAST:event_saveActionPerformed
+
+    private void checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActionPerformed
+        // TODO add your handling code here:
+        Property p =new Property();
+        p.setDriver(driver.getText());
+        p.setUrl(url.getText());
+        p.setUser(username.getText());
+        p.setPass(password.getText());
+        dbc = new DBConnect(p);
+        if(dbc.checkConnection())
+            JOptionPane.showMessageDialog(null, "Success");
+        else
+            JOptionPane.showMessageDialog(null, "Failed");
+        
+    }//GEN-LAST:event_checkActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddDB().setVisible(true);
@@ -227,7 +320,7 @@ public class AddDB extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField password;
     private javax.swing.JButton save;
     private javax.swing.JCheckBox showPassword;
     private javax.swing.JTextField url;
