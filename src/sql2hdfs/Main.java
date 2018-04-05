@@ -38,18 +38,18 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        chooseDB = new javax.swing.JLabel();
         urlComoBox = new javax.swing.JComboBox<>();
         Connect = new javax.swing.JButton();
         Manage = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        Table = new javax.swing.JLabel();
         tableComoBox = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        displayTable = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         query = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        execute = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         destination = new javax.swing.JLabel();
         dest = new javax.swing.JTextField();
@@ -59,11 +59,11 @@ public class Main extends javax.swing.JFrame {
         setTitle("Sql2Hdfs");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Choose DB");
+        chooseDB.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
+        chooseDB.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        chooseDB.setText("Choose DB");
 
         urlComoBox.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         urlComoBox.setModel(new javax.swing.DefaultComboBoxModel<>(xd.getUrls()));
@@ -89,9 +89,9 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Table");
+        Table.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
+        Table.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Table.setText("Table");
 
         tableComoBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableComoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{""}));
@@ -110,9 +110,8 @@ public class Main extends javax.swing.JFrame {
 
             }
         ));
-        jTable1.setColumnSelectionAllowed(false);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jTable1);
+        displayTable.setViewportView(jTable1);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setText("customize Query");
@@ -126,11 +125,11 @@ public class Main extends javax.swing.JFrame {
         query.setRows(5);
         jScrollPane2.setViewportView(query);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton1.setText("Execute");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        execute.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        execute.setText("Execute");
+        execute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                executeActionPerformed(evt);
             }
         });
 
@@ -142,7 +141,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chooseDB, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(urlComoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -153,19 +152,19 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(127, 127, 127)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Table, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tableComoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(76, 76, 76)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(displayTable, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(98, 98, 98)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
-                                .addComponent(jButton1)))
+                                .addComponent(execute)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -177,15 +176,15 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(urlComoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Connect, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Manage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chooseDB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tableComoBox, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Table, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(27, 27, 27)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(displayTable, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -196,15 +195,22 @@ public class Main extends javax.swing.JFrame {
                         .addContainerGap(28, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(execute, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47))))
         );
+
+        jPanel2.setBackground(new java.awt.Color(255, 204, 153));
 
         destination.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
         destination.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         destination.setText("Destination");
 
         Transfer.setText("Transfer");
+        Transfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransferActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -295,11 +301,25 @@ public class Main extends javax.swing.JFrame {
         dbc.setTableData(this.table, jTable1, query);
     }//GEN-LAST:event_tableComoBoxItemStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
         // TODO add your handling code here:
         this.table = query.getText();
         dbc.setTableData(this.table, jTable1, query);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_executeActionPerformed
+
+    private void TransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransferActionPerformed
+        // TODO add your handling code here:
+        if(p==null || table.equals("")) {
+        	JOptionPane.showMessageDialog(null, "Failed");
+        	return;
+        }
+        try {
+        	transfer.run(p.getUrl(), p.getDriver(), p.getUser(), p.getPass(), table, query.getText(), dest.getText());
+        }
+        catch(Exception e) {
+        	JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_TransferActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,16 +336,16 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Connect;
     private javax.swing.JButton Manage;
+    private javax.swing.JLabel Table;
     private javax.swing.JButton Transfer;
+    private javax.swing.JLabel chooseDB;
     private javax.swing.JTextField dest;
     private javax.swing.JLabel destination;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane displayTable;
+    private javax.swing.JButton execute;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea query;

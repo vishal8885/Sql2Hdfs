@@ -6,7 +6,6 @@
 package sql2hdfs;
 
 import javax.swing.JOptionPane;
-import sun.security.util.Password;
 
 /**
  *
@@ -34,6 +33,9 @@ public class AddDB extends javax.swing.JFrame {
         this.url.setText(up.getUrl());
         username.setText(up.getUser());
         password.setText(up.getPass());
+        password.setText(up.getPass());
+        password.setText(up.getPass());
+        
     }
 
     /**
