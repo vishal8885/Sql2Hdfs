@@ -63,9 +63,6 @@ public class DBConnect {
     public void setTableData(String query, JTable jt,JTextArea ta) {
         List<String> columns = new ArrayList<String>();
         try {
-            if(!query.contains("SELECT")){
-                query = "SELECT * FROM "+query;
-            }
             st = con.prepareStatement(query);
             ResultSet rs = st.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
